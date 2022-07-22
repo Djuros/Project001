@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
+using Photon.Pun;
 using UnityEngine.UI;
 using System;
 
-public class LobbyManager : Photon.MonoBehaviour
+public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public InputField roomInputField, joinRoomInput;
     public GameObject lobbyPanel, roomPanel;
@@ -14,72 +15,40 @@ public class LobbyManager : Photon.MonoBehaviour
     public RoomItem roomItemPrefab;
     List<RoomItem> roomItemsList = new List<RoomItem>();
     public Transform contenctObject;
-    public RoomInfo[] rooms;
+    public float timeBetweenUpdates = 1.5f;
+    float nextUpdateTime;
 
     private void Start()
     {
-        PhotonNetwork.playerName = "Adrian";
-        PhotonNetwork.ConnectUsingSettings(Application.version);
-      
-    }
-
-
-    public void OnConnectedToMaster()
-    {
         PhotonNetwork.JoinLobby();
-        InvokeRepeating("RefreshRooms", 2, 2);
     }
 
-
-    public virtual void OnJoinedLobby()
-    {
-        Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinRandomRoom();");
-    }
-    void RefreshRooms()
-    {
-        if (rooms == null)
-        {
-            print("ROOMS IS NULL");
-            return; }
-        print("ROOMS " + rooms.Length);
-        for (int i = 0; i < rooms.Length; i++)
-        {
-            print("Room Name "+rooms[i]);
-        }
-
-    }
-    void GetRooms()
-    {
-        rooms = PhotonNetwork.GetRoomList();
-
-
-    }
     public void OnClickCreate()
     {
         if(roomInputField.text.Length >= 1)
         {
             PhotonNetwork.CreateRoom(roomInputField.text);
-            Invoke("GetRooms", 2);
         }
     }
 
-    public void OnJoinedRoom()
+    public override void OnJoinedRoom()
     {
         lobbyPanel.SetActive(false);
         roomPanel.SetActive(true);
-        roomName.text = "Room name: " + PhotonNetwork.room.name;
-        PhotonNetwork.room.visible = true;
+        roomName.text = "Welcome to room: " + PhotonNetwork.CurrentRoom.Name;
     }
 
-    public void OnRoomListUpdate(List<RoomInfo> roomList)
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("Room List Updated");
-        UpdateRoomList(roomList);
+        if(Time.time >= nextUpdateTime)
+        {
+            nextUpdateTime = Time.time + timeBetweenUpdates;
+            UpdateRoomList(roomList);
+        }
     }
 
     public void UpdateRoomList(List<RoomInfo> list)
     {
-        print("UPDATE ROOM");
         foreach(RoomItem item in roomItemsList)
         {
             Destroy(item.gameObject);
@@ -94,8 +63,31 @@ public class LobbyManager : Photon.MonoBehaviour
         }
     }
 
-    public void JoinRoom()
+    public void JoinRoom(string roomName)
     {
+        PhotonNetwork.JoinRoom(roomName);
+    }
+
+    public void JoinSpecificRoom()
+    {
+        if(joinRoomInput.text.Length < 1) { return; }
+
         PhotonNetwork.JoinRoom(joinRoomInput.text);
+    }
+
+    public void OnClickLeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        lobbyPanel.SetActive(true);
+        roomPanel.SetActive(false);
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinLobby();
     }
 }

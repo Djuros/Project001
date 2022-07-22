@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
+using Photon.Pun;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class ConnectToServer : MonoBehaviour
+public class ConnectToServer : MonoBehaviourPunCallbacks
 {
+    public GameObject enterAName;
     public InputField usernameInput;
     public Text buttonText;
 
@@ -14,13 +16,15 @@ public class ConnectToServer : MonoBehaviour
     {
         if(usernameInput.text.Length >= 1)
         {
-            PhotonNetwork.playerName = usernameInput.text;
+            PhotonNetwork.NickName = usernameInput.text;
+            enterAName.SetActive(false);
             buttonText.text = "Connecting...";
-            PhotonNetwork.ConnectUsingSettings(Application.version);
+            PhotonNetwork.ConnectUsingSettings();
         }
+        else { enterAName.SetActive(true); }
     }
 
-    public void OnConnectedToMaster()
+    public override void OnConnectedToMaster()
     {
         SceneManager.LoadScene("LobbyScene");
     }
