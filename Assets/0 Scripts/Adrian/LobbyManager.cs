@@ -25,7 +25,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2) // Show play button only to room master
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1) // Show play button only to room master
         {
             startButton.SetActive(true);
         }
@@ -49,6 +49,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         lobbyPanel.SetActive(false);
         roomPanel.SetActive(true);
         roomName.text = "Welcome to room: " + PhotonNetwork.CurrentRoom.Name;
+
+        // send to everyone your id
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList) // Update active room list

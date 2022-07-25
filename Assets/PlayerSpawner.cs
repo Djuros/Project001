@@ -9,6 +9,6 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Start()
     {
-        PhotonNetwork.Instantiate(playerPrefab.name, transform.position, Quaternion.identity);
+        MessagingSystem.ins.me = PhotonNetwork.Instantiate(playerPrefab.name, transform.position, Quaternion.identity).GetComponent<MyMPRef>();
     }
 }

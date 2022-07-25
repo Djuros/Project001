@@ -221,6 +221,7 @@ namespace Photon.Chat.Demo
         private byte[] testBytes = new byte[2048];
 
         private void SendChatMessage(string inputLine)
+            
         {
             if (string.IsNullOrEmpty(inputLine))
             {
