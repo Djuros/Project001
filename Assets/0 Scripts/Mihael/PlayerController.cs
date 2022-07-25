@@ -35,13 +35,13 @@ public class PlayerController : MonoBehaviour {
         var vertical = Input.GetAxis("Vertical");
         
         MovePlayer(horizontal, vertical);
-        RotatePlayer();
+        RotatePlayerToMousePosition();
         
         if (Input.GetButton("Fire1")) _player.Shoot();
     }
 
     // Private methods
-    private void RotatePlayer() {
+    private void RotatePlayerToMousePosition() {
         // cast ray through mouse cursor
         var ray = _camera.ScreenPointToRay(Input.mousePosition);
         // only hit colliders on terrain layer
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour {
             transform.rotation = Quaternion.LookRotation(newRotation);
         }
     }
-    
+
     private void MovePlayer(float horizontal, float vertical) {
         var input = new Vector2(horizontal, vertical);
         // normalize if needed
