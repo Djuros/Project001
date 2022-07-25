@@ -11,15 +11,15 @@ public class RoomItem : MonoBehaviour
 
     private void Start()
     {
-        manager = FindObjectOfType<LobbyManager>();
+        manager = FindObjectOfType<LobbyManager>(); // Find Lobby Manager 
     }
 
-    public void SetRoomName(string _roomName)
+    public void SetRoomName(string _roomName) // Set button's text to room name
     {
         roomName.text = _roomName;
     }
 
-    public void OnClickItem()
+    public void OnClickItem() // On button click call "JoinRoom" from Lobby Manager
     {
         manager.JoinRoom(roomName.text);
     }

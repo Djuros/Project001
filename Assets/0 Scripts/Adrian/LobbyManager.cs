@@ -9,7 +9,7 @@ using System;
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public InputField roomInputField, joinRoomInput;
-    public GameObject lobbyPanel, roomPanel;
+    public GameObject lobbyPanel, roomPanel, startButton;
     public Text roomName;
 
     public RoomItem roomItemPrefab;
@@ -20,10 +20,23 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        PhotonNetwork.JoinLobby();
+        PhotonNetwork.JoinLobby(); // Make player join lobby
     }
 
-    public void OnClickCreate()
+    private void Update()
+    {
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2) // Show play button only to room master
+        {
+            startButton.SetActive(true);
+        }
+        else
+        {
+            startButton.SetActive(false);
+
+        }
+    }
+
+    public void OnClickCreate() // On click button check the value if true create new room
     {
         if(roomInputField.text.Length >= 1)
         {
@@ -31,14 +44,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnJoinedRoom()
+    public override void OnJoinedRoom() // On joining room set room name and display new panel
     {
         lobbyPanel.SetActive(false);
         roomPanel.SetActive(true);
         roomName.text = "Welcome to room: " + PhotonNetwork.CurrentRoom.Name;
     }
 
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    public override void OnRoomListUpdate(List<RoomInfo> roomList) // Update active room list
     {
         if(Time.time >= nextUpdateTime)
         {
@@ -75,7 +88,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(joinRoomInput.text);
     }
 
-    public void OnClickLeaveRoom()
+    public void OnClickLeaveRoom() // Leave Room
     {
         PhotonNetwork.LeaveRoom();
     }
@@ -84,6 +97,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         lobbyPanel.SetActive(true);
         roomPanel.SetActive(false);
+    }
+
+    public void OnClickPlayButton()
+    {
+        PhotonNetwork.LoadLevel("AdrianGameScene");
     }
 
     public override void OnConnectedToMaster()

@@ -14,17 +14,18 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 
     public void OnClickConnect()
     {
-        if(usernameInput.text.Length >= 1)
+        if(usernameInput.text.Length >= 1) // Check if username input is not null
         {
-            PhotonNetwork.NickName = usernameInput.text;
+            PhotonNetwork.NickName = usernameInput.text; // Set inputed string as Nickname
             enterAName.SetActive(false);
             buttonText.text = "Connecting...";
-            PhotonNetwork.ConnectUsingSettings();
+            PhotonNetwork.AutomaticallySyncScene = true;
+            PhotonNetwork.ConnectUsingSettings(); // Connect to a server
         }
         else { enterAName.SetActive(true); }
     }
 
-    public override void OnConnectedToMaster()
+    public override void OnConnectedToMaster() // If connected open Lobby scene
     {
         SceneManager.LoadScene("LobbyScene");
     }
