@@ -6,7 +6,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     // Inspector assigned
     [Header("Movement")]
-    [SerializeField] [Range(1, 20)] int _moveSpeed = 10;
+    [SerializeField] [Range(1, 20)] int _walkSpeed = 10;
+    [SerializeField] [Range(10, 30)] private int _runSpeed = 20;
     [SerializeField] private float _stickToGrouondForce = 5f;
     [SerializeField] private int _rotateSpeed = 5;
     
@@ -63,7 +64,8 @@ public class PlayerController : MonoBehaviour {
         
         // move along the global axis:
         var desiredMove = Vector3.forward * input.y + Vector3.right * input.x;
-        desiredMove *= _moveSpeed;
+        // set movement speed
+        desiredMove = Input.GetButton("Run") ? desiredMove * _runSpeed : desiredMove * _walkSpeed;
         
         // put down pressure, so the player stick to the ground
         desiredMove.y -= _stickToGrouondForce;

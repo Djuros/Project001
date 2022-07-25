@@ -35,8 +35,11 @@ public class Player : MonoBehaviour{
     public void Shoot() {
         if (_shootCounter < _shootPeriod) return;
         _shootCounter = 0f;
-        
         _playerController.ShootAnimation();
+    }
+    
+    // callbacks
+    public void ShootCallback() {
         // setup bullet
         Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation, _bulletParent);
     }
