@@ -13,10 +13,12 @@ public class PlayerController : MonoBehaviour {
     // Internal variables
     private CharacterController _controller;
     private Camera _camera;
+    private Animator _anim;
 
     // Unity event methods
     private void Start() {
         _controller = GetComponent<CharacterController>();
+        _anim = GetComponent<Animator>();
         _camera = Camera.main;
     }
     
@@ -33,11 +35,13 @@ public class PlayerController : MonoBehaviour {
     private void RotatePlayer() {
         // cast ray through mouse cursor
         var ray = _camera.ScreenPointToRay(Input.mousePosition);
+        // only hit colliders on terrain layer
         var mask = LayerMask.GetMask("Terrain");
         
-        if (Physics.Raycast(ray, out var hit, 100f)) {
+        if (Physics.Raycast(ray, out var hit, 50f, mask)) {
             var direction = hit.point - transform.position;
             var newRotation = Vector3.RotateTowards(transform.forward, direction, _rotateSpeed * Time.deltaTime, 0f);
+            // only rotate around y axis
             newRotation.y = 0f;
             transform.rotation = Quaternion.LookRotation(newRotation);
         }
@@ -56,5 +60,7 @@ public class PlayerController : MonoBehaviour {
         desiredMove.y -= _stickToGrouondForce;
         // move with character controller
         _controller.Move(desiredMove * Time.deltaTime);
+        // activate run animation based on the input
+        _anim.SetFloat("Run", input.magnitude);
     }
 }
