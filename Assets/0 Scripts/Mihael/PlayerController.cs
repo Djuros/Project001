@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     private CharacterController _controller;
     private Camera _camera;
     private Animator _anim;
+    private Player _player;
     
     // animation parameter hashes
     private readonly int _runParameterHash = Animator.StringToHash("Run");
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour {
         // get components
         _controller = GetComponent<CharacterController>();
         _anim = GetComponent<Animator>();
+        _player = GetComponent<Player>();
         _camera = Camera.main;
     }
     
@@ -31,10 +33,11 @@ public class PlayerController : MonoBehaviour {
         // get input
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
-
+        
         MovePlayer(horizontal, vertical);
         RotatePlayer();
-        Shoot();
+        
+        if (Input.GetButton("Fire1")) _player.Shoot();
     }
 
     // Private methods
@@ -69,11 +72,9 @@ public class PlayerController : MonoBehaviour {
         // activate run animation based on the input
         _anim.SetFloat(_runParameterHash, input.magnitude);
     }
-
-    private void Shoot() {
-        if (!Input.GetButton("Fire1")) return;
-        
+    
+    // public methods
+    public void ShootAnimation() {
         _anim.SetTrigger(_shootParameterHash);
-        Debug.Log("shooting!");
     }
 }
