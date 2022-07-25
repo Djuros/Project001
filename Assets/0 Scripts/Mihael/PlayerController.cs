@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour {
     
     // animation parameter hashes
     private readonly int _runParameterHash = Animator.StringToHash("Run");
+    private readonly int _shootParameterHash = Animator.StringToHash("Shoot");
 
     // Unity event methods
     private void Start() {
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour {
 
         MovePlayer(horizontal, vertical);
         RotatePlayer();
+        Shoot();
     }
 
     // Private methods
@@ -66,5 +68,12 @@ public class PlayerController : MonoBehaviour {
         _controller.Move(desiredMove * Time.deltaTime);
         // activate run animation based on the input
         _anim.SetFloat(_runParameterHash, input.magnitude);
+    }
+
+    private void Shoot() {
+        if (!Input.GetButton("Fire1")) return;
+        
+        _anim.SetTrigger(_shootParameterHash);
+        Debug.Log("shooting!");
     }
 }
