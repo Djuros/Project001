@@ -14,9 +14,13 @@ public class PlayerController : MonoBehaviour {
     private CharacterController _controller;
     private Camera _camera;
     private Animator _anim;
+    
+    // animation parameter hashes
+    private readonly int _runParameterHash = Animator.StringToHash("Run");
 
     // Unity event methods
     private void Start() {
+        // get components
         _controller = GetComponent<CharacterController>();
         _anim = GetComponent<Animator>();
         _camera = Camera.main;
@@ -61,6 +65,6 @@ public class PlayerController : MonoBehaviour {
         // move with character controller
         _controller.Move(desiredMove * Time.deltaTime);
         // activate run animation based on the input
-        _anim.SetFloat("Run", input.magnitude);
+        _anim.SetFloat(_runParameterHash, input.magnitude);
     }
 }
