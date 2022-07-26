@@ -10,16 +10,23 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] [Range(10, 30)] private int _runSpeed = 20;
     [SerializeField] private float _stickToGrouondForce = 5f;
     [SerializeField] private int _rotateSpeed = 5;
+    [Header("Shooting")] 
+    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Transform _bulletSpawnPoint;
+    [SerializeField] private Transform _bulletParent;
+    [SerializeField] private float _fireRate = 1f;
     
     // Internal variables
     private CharacterController _controller;
     private Camera _camera;
     private Animator _anim;
     private Player _player;
+    private float _shootCounter;
     
     // animation parameter hashes
     private readonly int _runParameterHash = Animator.StringToHash("Run");
     private readonly int _shootParameterHash = Animator.StringToHash("Shoot");
+    private readonly int _fireRateParameterHash = Animator.StringToHash("FireRate");
 
     // Unity event methods
     private void Start() {
@@ -29,7 +36,11 @@ public class PlayerController : MonoBehaviour {
         _player = GetComponent<Player>();
         _camera = Camera.main;
     }
-    
+
+    private void Update() {
+        _shootCounter += Time.deltaTime * _fireRate;
+    }
+
     private void FixedUpdate() {
         // get input
         var horizontal = Input.GetAxis("Horizontal");
@@ -37,8 +48,8 @@ public class PlayerController : MonoBehaviour {
         
         MovePlayer(horizontal, vertical);
         RotatePlayerToMousePosition();
-        
-        if (Input.GetButton("Fire1")) _player.Shoot();
+
+        if (Input.GetButton("Fire1")) ShootBullet();
     }
 
     // Private methods
@@ -77,7 +88,21 @@ public class PlayerController : MonoBehaviour {
     }
     
     // public methods
-    public void ShootAnimation() {
+    private void ShootBullet() {
+        if (_shootCounter < 1f) return;
+        
         _anim.SetTrigger(_shootParameterHash);
+        // set fire animation speed
+        _anim.SetFloat(_fireRateParameterHash, _fireRate);
+    }
+    
+    // public callback methods
+    
+    /// <summary>
+    /// this method is called when the animation fires the bullet
+    /// </summary>
+    public void ShootCallback() {
+        // setup bullet
+        Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation, _bulletParent);
     }
 }
