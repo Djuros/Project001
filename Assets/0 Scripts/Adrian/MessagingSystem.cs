@@ -7,7 +7,7 @@ using Photon.Realtime;
 public class MessagingSystem : MonoBehaviourPunCallbacks
 {
     public static MessagingSystem ins;
-    public PhotonView photonView, otherPlayer;
+    public PhotonView photonView;
     public MyMPRef me;
     public MyMPRef[] players;
     public float cnt;
