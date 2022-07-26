@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791722031}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.499}
+  m_LocalPosition: {x: 0.15, y: -0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -331,7 +331,7 @@ Animator:
   m_GameObject: {fileID: 4226949928924686972}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 7b36a186c6950424394704a9292a7114, type: 3}
-  m_Controller: {fileID: 9100000, guid: 94d76f859419a5048a2d6cf80ef45f88, type: 2}
+  m_Controller: {fileID: 9100000, guid: 49d2a1866813748439e48bd1edcf903c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -401,9 +401,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eea5ccff72684e4390bdf697c134129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 7
+  _walkSpeed: 6
+  _runSpeed: 14
   _stickToGrouondForce: 5
-  _rotateSpeed: 5
+  _rotateSpeed: 15
+  _bulletPrefab: {fileID: 2246159427768483030, guid: 5e277537f7e9a4f678ee12238b0db84e,
+    type: 3}
+  _bulletSpawnPoint: {fileID: 1791722032}
+  _bulletParent: {fileID: 309669259}
+  _fireRate: 1
 --- !u!114 &2826664537481712350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,11 +423,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 100
-  _bulletPrefab: {fileID: 2246159427768483030, guid: 5e277537f7e9a4f678ee12238b0db84e,
-    type: 3}
-  _bulletSpawnPoint: {fileID: 1791722032}
-  _bulletParent: {fileID: 309669259}
-  _shootPeriod: 0.5
 --- !u!1 &4226949928924686974
 GameObject:
   m_ObjectHideFlags: 0
