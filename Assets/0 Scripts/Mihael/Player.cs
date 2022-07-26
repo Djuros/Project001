@@ -39,6 +39,10 @@ public class Player : MonoBehaviour{
     }
     
     // callbacks
+    
+    /// <summary>
+    /// this method is called when the animation fires the bullet
+    /// </summary>
     public void ShootCallback() {
         // setup bullet
         Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation, _bulletParent);

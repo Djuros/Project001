@@ -65,14 +65,15 @@ public class PlayerController : MonoBehaviour {
         // move along the global axis:
         var desiredMove = Vector3.forward * input.y + Vector3.right * input.x;
         // set movement speed
-        desiredMove = Input.GetButton("Run") ? desiredMove * _runSpeed : desiredMove * _walkSpeed;
-        
+        var running = Input.GetButton("Run");
+        desiredMove = running ? desiredMove * _runSpeed : desiredMove * _walkSpeed;
+
         // put down pressure, so the player stick to the ground
         desiredMove.y -= _stickToGrouondForce;
         // move with character controller
         _controller.Move(desiredMove * Time.deltaTime);
         // activate run animation based on the input
-        _anim.SetFloat(_runParameterHash, input.magnitude);
+        _anim.SetFloat(_runParameterHash, running ? 2f * input.magnitude : input.magnitude);
     }
     
     // public methods
