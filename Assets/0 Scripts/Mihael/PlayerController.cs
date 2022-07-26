@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour {
     /// this method is called when the animation fires the bullet
     /// </summary>
     public void ShootCallback() {
-        // setup bullet
+        // setup bullet instantiation
         Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation, _bulletParent);
     }
 }

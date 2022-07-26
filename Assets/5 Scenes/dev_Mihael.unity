@@ -453,6 +453,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &190905755 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1791722032, guid: 8f20c1fffb38a4f9db7243e59c9c4f98,
+    type: 3}
+  m_PrefabInstance: {fileID: 2131171272077396611}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &238139258 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 309669259, guid: 8f20c1fffb38a4f9db7243e59c9c4f98,
+    type: 3}
+  m_PrefabInstance: {fileID: 2131171272077396611}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &346499993 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2131171272402919706, guid: 8f20c1fffb38a4f9db7243e59c9c4f98,
@@ -483,7 +495,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346505791}
-  m_LocalRotation: {x: -0.3607138, y: -0.00000008153597, z: 0.00000003153339, w: -0.93267655}
+  m_LocalRotation: {x: -0.3607141, y: -0.00000008153513, z: 0.00000003153258, w: -0.93267643}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -596,7 +608,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533211470}
-  m_LocalRotation: {x: -0.34375685, y: -0.000000082097635, z: 0.000000030051428, w: -0.9390587}
+  m_LocalRotation: {x: -0.34375677, y: -0.00000008209925, z: 0.000000030050938, w: -0.9390588}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1821,6 +1833,22 @@ PrefabInstance:
       propertyPath: _rotateSpeed
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 4226949928917293145, guid: 8f20c1fffb38a4f9db7243e59c9c4f98,
+        type: 3}
+      propertyPath: _bulletParent
+      value: 
+      objectReference: {fileID: 238139258}
+    - target: {fileID: 4226949928917293145, guid: 8f20c1fffb38a4f9db7243e59c9c4f98,
+        type: 3}
+      propertyPath: _bulletPrefab
+      value: 
+      objectReference: {fileID: 2246159427768483030, guid: 5e277537f7e9a4f678ee12238b0db84e,
+        type: 3}
+    - target: {fileID: 4226949928917293145, guid: 8f20c1fffb38a4f9db7243e59c9c4f98,
+        type: 3}
+      propertyPath: _bulletSpawnPoint
+      value: 
+      objectReference: {fileID: 190905755}
     m_RemovedComponents:
     - {fileID: 2131171273877982614, guid: 8f20c1fffb38a4f9db7243e59c9c4f98, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8f20c1fffb38a4f9db7243e59c9c4f98, type: 3}
