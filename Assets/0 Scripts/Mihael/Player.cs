@@ -17,7 +17,7 @@ public class Player : MonoBehaviour{
     // Internal variables
     private PlayerController _playerController;
 
-    private float _shootCounter = 0f;
+    public float _shootCounter = 0f;
 
     // Unity event methods
     private void Start() {
@@ -26,16 +26,31 @@ public class Player : MonoBehaviour{
 
     private void Update() {
         _shootCounter += Time.deltaTime;
-    }
 
+        if (fire_cnt < 1)
+        {
+            fire_cnt += Time.deltaTime * fire_rate;
+        }
+        if (Input.GetMouseButton(0) && fire_cnt > 1) {
+            fire_cnt = 0;
+            print("FIRE");
+            _shootCounter = 0f;
+            _playerController._anim.speed = fire_rate;
+
+            _playerController._anim.Play("Shoot", 1);
+          //  _playerController.ShootAnimation();
+        }
+
+    }
+    public float fire_rate = 3, fire_cnt;
     // private methods
     
     
     // public methods
     public void Shoot() {
-        if (_shootCounter < _shootPeriod) return;
-        _shootCounter = 0f;
-        _playerController.ShootAnimation();
+      //  if (_shootCounter < _shootPeriod) return;
+      //  _shootCounter = 0f;
+       // _playerController.ShootAnimation();
     }
     
     // callbacks

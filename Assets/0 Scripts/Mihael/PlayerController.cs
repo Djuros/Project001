@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     // Internal variables
     private CharacterController _controller;
     private Camera _camera;
-    private Animator _anim;
+    public Animator _anim;
     private Player _player;
     
     // animation parameter hashes
