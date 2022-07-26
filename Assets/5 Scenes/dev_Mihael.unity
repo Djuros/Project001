@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2184.0908, g: 2362.7031, b: 3647.043, a: 1}
+  m_IndirectSpecularColor: {r: 2157.4395, g: 2262.213, b: 3286.3906, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -454,6 +454,37 @@ Transform:
   - {fileID: 1856533101}
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1204230893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1204230894}
+  m_Layer: 0
+  m_Name: BulletPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1204230894
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204230893}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 10000, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1273655923
 GameObject:
@@ -2104,6 +2135,7 @@ MonoBehaviour:
   _runSpeed: 20
   _stickToGrouondForce: 5
   _rotateSpeed: 5
+  _anim: {fileID: 0}
 --- !u!54 &2826664537481712347
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2170,6 +2202,9 @@ MonoBehaviour:
   _bulletSpawnPoint: {fileID: 1554733742}
   _bulletParent: {fileID: 1282799085}
   _shootPeriod: 0.1
+  _shootCounter: 0
+  fire_rate: 3
+  fire_cnt: 0
 --- !u!1 &4727590309986531684
 GameObject:
   m_ObjectHideFlags: 0
