@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour {
     private readonly int _runParameterHash = Animator.StringToHash("Run");
     private readonly int _shootParameterHash = Animator.StringToHash("Shoot");
     private readonly int _fireRateParameterHash = Animator.StringToHash("FireRate");
+    private static readonly int _deathParameterHash = Animator.StringToHash("Death");
 
     // Unity event methods
     private void Start() {
@@ -42,6 +43,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        // dont move if dead
+        if (_player.Dead) return;
+        
         // get input
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
@@ -87,7 +91,6 @@ public class PlayerController : MonoBehaviour {
         _anim.SetFloat(_runParameterHash, running ? 2f * input.magnitude : input.magnitude);
     }
     
-    // public methods
     private void ShootBullet() {
         if (_shootCounter < 1f) return;
         _shootCounter = 0f;
@@ -95,6 +98,11 @@ public class PlayerController : MonoBehaviour {
         _anim.SetTrigger(_shootParameterHash);
         // set fire animation speed
         _anim.SetFloat(_fireRateParameterHash, _fireRate);
+    }
+    
+    // public methods
+    public void DeathAnimation() {
+        _anim.SetTrigger(_deathParameterHash);
     }
     
     // public callback methods
