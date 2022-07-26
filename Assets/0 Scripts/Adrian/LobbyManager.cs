@@ -32,7 +32,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         else
         {
             startButton.SetActive(false);
-
         }
     }
 
