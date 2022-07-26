@@ -90,6 +90,7 @@ public class PlayerController : MonoBehaviour {
     // public methods
     private void ShootBullet() {
         if (_shootCounter < 1f) return;
+        _shootCounter = 0f;
         
         _anim.SetTrigger(_shootParameterHash);
         // set fire animation speed
