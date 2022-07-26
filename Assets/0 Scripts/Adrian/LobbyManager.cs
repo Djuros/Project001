@@ -20,7 +20,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        PhotonNetwork.JoinLobby(); // Make player join lobby
+        PhotonNetwork.JoinLobby();
     }
 
     private void Update()

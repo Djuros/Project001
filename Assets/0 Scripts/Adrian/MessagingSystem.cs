@@ -7,11 +7,13 @@ using Photon.Realtime;
 public class MessagingSystem : MonoBehaviourPunCallbacks
 {
     public static MessagingSystem ins;
+    public static HUD hudIns;
     public PhotonView photonView;
     public MyMPRef me;
     public MyMPRef[] players;
-    public float cnt;
-    
+    public List<string> playerNames = new List<string>();
+    public List<int> playerScore = new List<int>();
+
     private void Awake()
     {
         ins = this;
@@ -23,7 +25,10 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     }
     void UpdatePlayers()
     {
-        players = FindObjectsOfType<MyMPRef>();
+        if (PhotonNetwork.IsMasterClient) {
+            players = FindObjectsOfType<MyMPRef>();
+        }
+     
     }
     private void Update()
     {
@@ -35,25 +40,35 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
 
             if (Physics.Raycast(ray, out hit, 100))
             {
-                print("Ray");
                 if(hit.transform.gameObject.CompareTag("Player"))
                 {
-                    print("Player");
                     pID = hit.transform.gameObject.GetPhotonView().ViewID;
                 }
-                print(hit.transform.gameObject);
             }
             photonView.RPC("ChatMessage", RpcTarget.All, "TakeDamange", pID, 10);
+        }
+
+        if (Input.GetKeyUp(KeyCode.G))
+        {
+            int num = Random.Range(0, 10);
+            photonView.RPC("SendScoreboardData", RpcTarget.All, me.name, num);
+        }
+
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            for(int i = 0; i < playerNames.Count; i++)
+            {
+                
+            }
+            HUD.ins.OnGameEnded();
         }
     }
 
     [PunRPC]
     void ChatMessage(string _action, int _id, int _value)
     {
-        print("Message");
         if (_action == "TakeDamange")
         {
-            print("Damage");
             for (int i = 0; i < players.Length; i++)
             {
                 if (_id == players[i].GetComponent<MyMPRef>().my_id)
@@ -64,5 +79,12 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
                 }
             }
         }
+    }
+
+    [PunRPC]
+    void SendScoreboardData(string _playerName, int _points)
+    {
+        playerNames.Add(_playerName);
+        playerScore.Add(_points);
     }
 }

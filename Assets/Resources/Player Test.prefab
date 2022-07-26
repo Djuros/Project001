@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   my_id: 0
+  capturedFlags: 0
   my_healt: 100
   pv: {fileID: 1105015702410451871}
   gun: {fileID: 3887678540453595563}
