@@ -11,6 +11,7 @@ public class MyMPRef : MonoBehaviour
     public float my_healt;
     public PhotonView pv;
     public Transform gun;
+    public bool playAgain = false;
 
     private void Start()
     {
