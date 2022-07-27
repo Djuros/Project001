@@ -9,9 +9,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] [Range(1, 20)] int _walkSpeed = 10;
     [SerializeField] [Range(1, 20)] private int _runSpeed = 20;
     [SerializeField] private int _rotateSpeed = 5;
-    
-    [Header("Jumping")]
-    [SerializeField] private float _jumpForce = 100f;
+    [SerializeField] private float _jumpForce = 4f;
 
     [Header("Shooting")] 
     [SerializeField] private GameObject _bulletPrefab;
@@ -25,6 +23,8 @@ public class PlayerController : MonoBehaviour {
     private Animator _anim;
     private Player _player;
     private float _shootCounter;
+
+    private float _yForce;
 
     // animation parameter hashes
     private readonly int _runParameterHash = Animator.StringToHash("Run");
@@ -87,15 +87,17 @@ public class PlayerController : MonoBehaviour {
         var running = Input.GetButton("Run");
         desiredMove = running ? desiredMove * _runSpeed : desiredMove * _walkSpeed;
 
-        // put down pressure, so the player sticks to the ground
-        desiredMove.y += Physics.gravity.y * Time.deltaTime;
+        // apply gravity
+        _yForce += Physics.gravity.y * Time.deltaTime;
         
         // jump if needed
         if (Input.GetButtonDown("Jump") && _controller.isGrounded) {
-            //_anim.SetTrigger(_jumpParameterHash);
-            desiredMove.y += Mathf.Sqrt(_jumpForce * 2 * -Physics.gravity.y);
+            _anim.SetTrigger(_jumpParameterHash);
+            _yForce = Mathf.Sqrt(_jumpForce * 2 * -Physics.gravity.y);
         }
-
+        
+        // fall at most at the force of gravity
+        desiredMove.y = Mathf.Max(Physics.gravity.y, _yForce);
         
         // move with character controller
         _controller.Move(desiredMove * Time.deltaTime);
