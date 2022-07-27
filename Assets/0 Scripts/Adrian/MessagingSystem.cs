@@ -15,10 +15,10 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     public MyMPRef[] players;
     public List<string> playerNames = new List<string>();
     public List<int> playerScore = new List<int>();
-    public List<bool> playersToPlayAgain = new List<bool>();
     public Button playAgainButton;
     public bool gameEnded = false;
     public Text startButtonStatus, PlayersTextStatus;
+    public int readyCounter = 0;
 
     private void Awake()
     {
@@ -31,9 +31,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     }
     void UpdatePlayers()
     {
-        if (PhotonNetwork.IsMasterClient) {
-            players = FindObjectsOfType<MyMPRef>();
-        }
+        players = FindObjectsOfType<MyMPRef>();
     }
     private void Update()
     {
@@ -68,27 +66,64 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
             return;
         }
 
-        if(playersToPlayAgain.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
+        UpdatePlayers();
+
+        SetPlayerStatuses();
+    }
+
+    void SetPlayerStatuses()
+    {
+        readyCounter = 0;
+        for (int i = 0; i < HUD.ins.playerStatus.Length; i++)
+        {
+            HUD.ins.playerReadyNames[i].SetActive(false);
+            HUD.ins.playerStatus[i].SetActive(false);
+        }
+        for (int i = 0; i < players.Length; i++)
+        {
+            HUD.ins.playerReadyNames[i].SetActive(true);
+            HUD.ins.playerStatus[i].SetActive(true);
+            HUD.ins.playerReadyNames[i].GetComponent<Text>().text = players[i].name.ToString();
+            if (players[i].playAgain)
+            {
+                HUD.ins.playerStatus[i].GetComponent<Text>().text = "READY";
+                HUD.ins.playerStatus[i].GetComponent<Text>().color = Color.green;
+                readyCounter++;
+            }
+            else
+            {
+                HUD.ins.playerStatus[i].GetComponent<Text>().color = Color.yellow;
+                HUD.ins.playerStatus[i].GetComponent<Text>().text = "WAITING";
+            }
+        }
+
+        if (readyCounter >= PhotonNetwork.CurrentRoom.PlayerCount)
         {
             PlayersTextStatus.text = "All of the players are ready to play!";
         }
         else
         {
-            PlayersTextStatus.text = playersToPlayAgain.Count.ToString() + " out of " + PhotonNetwork.CurrentRoom.PlayerCount.ToString() + " players are ready...";
+            PlayersTextStatus.text = readyCounter.ToString() + " out of " + PhotonNetwork.CurrentRoom.PlayerCount.ToString() + " players are ready...";
         }
 
-        if (PhotonNetwork.IsMasterClient && gameEnded && playersToPlayAgain.Count >= PhotonNetwork.CurrentRoom.PlayerCount)
+        if (PhotonNetwork.IsMasterClient && gameEnded && readyCounter >= PhotonNetwork.CurrentRoom.PlayerCount)
         {
             playAgainButton.interactable = true;
             startButtonStatus.text = "";
         }
-        else if (playersToPlayAgain.Count < PhotonNetwork.CurrentRoom.PlayerCount)
+        else if (readyCounter < PhotonNetwork.CurrentRoom.PlayerCount)
         {
             startButtonStatus.text = "Not all players are ready to start the game!";
         }
         else if (!PhotonNetwork.IsMasterClient)
         {
-            startButtonStatus.text = "Only Master Client can start the game!";
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].GetComponentInParent<PhotonView>().Owner.IsMasterClient)
+                {
+                    startButtonStatus.text = "Only player: " + players[i].name.ToString() + " can start the game!";
+                }
+            }
         }
     }
 
@@ -138,15 +173,22 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
 
     public void PlayAgainButton()
     {
-        photonView.RPC("PlayAgain", RpcTarget.All, "PlayAgain");
+        me.playAgain = true;
+        photonView.RPC("PlayAgain", RpcTarget.All, "PlayAgain", me.my_id);
     }
 
     [PunRPC]
-    void PlayAgain(string _action)
+    void PlayAgain(string _action, int _playerID)
     {
         if(_action == "PlayAgain")
         {
-            playersToPlayAgain.Add(true);
+            for(int i = 0; i < players.Length; i++)
+            {
+                if (players[i].my_id == _playerID)
+                {
+                    players[i].playAgain = true;
+                }
+            }
         }
     }
 
@@ -181,5 +223,10 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     {
         playerNames.Add(_playerName);
         playerScore.Add(_points);
+    }
+
+    public override void OnLeftRoom()
+    {
+        print("Blaž je zani?");
     }
 }

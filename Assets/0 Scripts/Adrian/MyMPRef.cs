@@ -11,6 +11,7 @@ public class MyMPRef : MonoBehaviour
     public float my_healt;
     public PhotonView pv;
     public Transform gun;
+    public bool playAgain = false;
 
     private void Start()
     {
@@ -20,7 +21,7 @@ public class MyMPRef : MonoBehaviour
         {
             this.gameObject.name = PhotonNetwork.NickName;
             my_id = pv.ViewID;
-           HUD.ins.fill_bar.fillAmount = 1;
+            HUD.ins.fill_bar.fillAmount = 1;
         }
         else
         {
