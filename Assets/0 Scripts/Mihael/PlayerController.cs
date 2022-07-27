@@ -7,9 +7,12 @@ public class PlayerController : MonoBehaviour {
     // Inspector assigned
     [Header("Movement")]
     [SerializeField] [Range(1, 20)] int _walkSpeed = 10;
-    [SerializeField] [Range(10, 30)] private int _runSpeed = 20;
-    [SerializeField] private float _stickToGrouondForce = 5f;
+    [SerializeField] [Range(1, 20)] private int _runSpeed = 20;
     [SerializeField] private int _rotateSpeed = 5;
+    
+    [Header("Jumping")]
+    [SerializeField] private float _jumpForce = 100f;
+
     [Header("Shooting")] 
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _bulletSpawnPoint;
@@ -22,12 +25,13 @@ public class PlayerController : MonoBehaviour {
     private Animator _anim;
     private Player _player;
     private float _shootCounter;
-    
+
     // animation parameter hashes
     private readonly int _runParameterHash = Animator.StringToHash("Run");
     private readonly int _shootParameterHash = Animator.StringToHash("Shoot");
     private readonly int _fireRateParameterHash = Animator.StringToHash("FireRate");
-    private static readonly int _deathParameterHash = Animator.StringToHash("Death");
+    private readonly int _deathParameterHash = Animator.StringToHash("Death");
+    private readonly int _jumpParameterHash = Animator.StringToHash("Jump");
 
     // Unity event methods
     private void Start() {
@@ -49,7 +53,7 @@ public class PlayerController : MonoBehaviour {
         // get input
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
-        
+
         MovePlayer(horizontal, vertical);
         RotatePlayerToMousePosition();
 
@@ -83,8 +87,16 @@ public class PlayerController : MonoBehaviour {
         var running = Input.GetButton("Run");
         desiredMove = running ? desiredMove * _runSpeed : desiredMove * _walkSpeed;
 
-        // put down pressure, so the player stick to the ground
-        desiredMove.y -= _stickToGrouondForce;
+        // put down pressure, so the player sticks to the ground
+        desiredMove.y += Physics.gravity.y * Time.deltaTime;
+        
+        // jump if needed
+        if (Input.GetButtonDown("Jump") && _controller.isGrounded) {
+            //_anim.SetTrigger(_jumpParameterHash);
+            desiredMove.y += Mathf.Sqrt(_jumpForce * 2 * -Physics.gravity.y);
+        }
+
+        
         // move with character controller
         _controller.Move(desiredMove * Time.deltaTime);
         // activate run animation based on the input
@@ -99,7 +111,7 @@ public class PlayerController : MonoBehaviour {
         // set fire animation speed
         _anim.SetFloat(_fireRateParameterHash, _fireRate);
     }
-    
+
     // public methods
     public void DeathAnimation() {
         _anim.SetTrigger(_deathParameterHash);
@@ -107,11 +119,10 @@ public class PlayerController : MonoBehaviour {
     
     // public callback methods
     
-    /// <summary>
-    /// this method is called when the animation fires the bullet
-    /// </summary>
+    // this method is called when the animation fires the bullet
     public void ShootCallback() {
         // setup bullet instantiation
+        // TODO: sometimes bullets get a rotation, so the fly through the ground and disappear
         Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation, _bulletParent);
     }
 }
