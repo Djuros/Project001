@@ -21,7 +21,7 @@ public class MyMPRef : MonoBehaviour
         {
             this.gameObject.name = PhotonNetwork.NickName;
             my_id = pv.ViewID;
-           HUD.ins.fill_bar.fillAmount = 1;
+            HUD.ins.fill_bar.fillAmount = 1;
         }
         else
         {

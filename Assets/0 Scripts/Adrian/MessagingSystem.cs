@@ -32,9 +32,6 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     void UpdatePlayers()
     {
         players = FindObjectsOfType<MyMPRef>();
-       /* if (PhotonNetwork.IsMasterClient) {
-           
-        }*/
     }
     private void Update()
     {
@@ -71,8 +68,18 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
 
         UpdatePlayers();
 
+        SetPlayerStatuses();
+    }
+
+    void SetPlayerStatuses()
+    {
         readyCounter = 0;
-        for(int i = 0; i < players.Length; i++)
+        for (int i = 0; i < HUD.ins.playerStatus.Length; i++)
+        {
+            HUD.ins.playerReadyNames[i].SetActive(false);
+            HUD.ins.playerStatus[i].SetActive(false);
+        }
+        for (int i = 0; i < players.Length; i++)
         {
             HUD.ins.playerReadyNames[i].SetActive(true);
             HUD.ins.playerStatus[i].SetActive(true);
@@ -110,7 +117,13 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
         }
         else if (!PhotonNetwork.IsMasterClient)
         {
-            startButtonStatus.text = "Only Master Client can start the game!";
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].GetComponentInParent<PhotonView>().Owner.IsMasterClient)
+                {
+                    startButtonStatus.text = "Only player: " + players[i].name.ToString() + " can start the game!";
+                }
+            }
         }
     }
 
