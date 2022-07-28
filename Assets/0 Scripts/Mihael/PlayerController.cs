@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour {
         MovePlayer(horizontal, vertical);
         RotatePlayerToMousePosition();
 
-        if (Input.GetButton("Fire1")) ShootBullet();
+        if (Input.GetButton("Fire1") && _controller.isGrounded) ShootBullet();
     }
 
     // Private methods
