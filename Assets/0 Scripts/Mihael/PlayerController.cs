@@ -11,9 +11,6 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float _stickToGrouondForce = 5f;
     [SerializeField] private int _rotateSpeed = 5;
     [Header("Shooting")] 
-    [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private Transform _bulletSpawnPoint;
-    [SerializeField] private Transform _bulletParent;
     [SerializeField] private float _fireRate = 1f;
     
     // Internal variables
@@ -97,7 +94,7 @@ public class PlayerController : MonoBehaviour {
         
         _anim.SetTrigger(_shootParameterHash);
         // set fire animation speed
-        _anim.SetFloat(_fireRateParameterHash, _fireRate);
+        _anim.SetFloat("FireRate", _fireRate);
     }
     
     // public methods
@@ -112,6 +109,6 @@ public class PlayerController : MonoBehaviour {
     /// </summary>
     public void ShootCallback() {
         // setup bullet instantiation
-        Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation, _bulletParent);
+        BulletPool.ins.Fire();
     }
 }
