@@ -11,10 +11,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private int _rotateSpeed = 5;
     [SerializeField] private float _jumpForce = 4f;
 
-    [Header("Shooting")] 
-    [SerializeField] private GameObject _bulletPrefab;
+    [Header("Shooting")]
+    [SerializeField] private BulletsPooling _bulletsPooling;
     [SerializeField] private Transform _bulletSpawnPoint;
-    [SerializeField] private Transform _bulletParent;
     [SerializeField] private float _fireRate = 1f;
     
     // Internal variables
@@ -123,8 +122,7 @@ public class PlayerController : MonoBehaviour {
     
     // this method is called when the animation fires the bullet
     public void ShootCallback() {
-        // setup bullet instantiation
-        // TODO: sometimes bullets get a rotation, so the fly through the ground and disappear
-        Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation, _bulletParent);
+        // set bullet from pooling system
+        _bulletsPooling.SpawnBullet(_bulletSpawnPoint);
     }
 }
