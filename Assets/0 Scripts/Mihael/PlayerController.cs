@@ -10,16 +10,21 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] [Range(10, 30)] private int _runSpeed = 20;
     [SerializeField] private float _stickToGrouondForce = 5f;
     [SerializeField] private int _rotateSpeed = 5;
+    [Header("Shooting")] 
+    [SerializeField] private float _fireRate = 1f;
     
     // Internal variables
     private CharacterController _controller;
     private Camera _camera;
     public Animator _anim;
     private Player _player;
+    private float _shootCounter;
     
     // animation parameter hashes
     private readonly int _runParameterHash = Animator.StringToHash("Run");
     private readonly int _shootParameterHash = Animator.StringToHash("Shoot");
+    private readonly int _fireRateParameterHash = Animator.StringToHash("FireRate");
+    private static readonly int _deathParameterHash = Animator.StringToHash("Death");
 
     // Unity event methods
     private void Start() {
@@ -29,16 +34,23 @@ public class PlayerController : MonoBehaviour {
         _player = GetComponent<Player>();
         _camera = Camera.main;
     }
-    
+
+    private void Update() {
+        _shootCounter += Time.deltaTime * _fireRate;
+    }
+
     private void FixedUpdate() {
+        // dont move if dead
+        if (_player.Dead) return;
+        
         // get input
         var horizontal = Input.GetAxis("Horizontal");
         var vertical = Input.GetAxis("Vertical");
         
         MovePlayer(horizontal, vertical);
         RotatePlayerToMousePosition();
-        
-        if (Input.GetButton("Fire1")) _player.Shoot();
+
+        if (Input.GetButton("Fire1")) ShootBullet();
     }
 
     // Private methods
@@ -65,18 +77,38 @@ public class PlayerController : MonoBehaviour {
         // move along the global axis:
         var desiredMove = Vector3.forward * input.y + Vector3.right * input.x;
         // set movement speed
-        desiredMove = Input.GetButton("Run") ? desiredMove * _runSpeed : desiredMove * _walkSpeed;
-        
+        var running = Input.GetButton("Run");
+        desiredMove = running ? desiredMove * _runSpeed : desiredMove * _walkSpeed;
+
         // put down pressure, so the player stick to the ground
         desiredMove.y -= _stickToGrouondForce;
         // move with character controller
         _controller.Move(desiredMove * Time.deltaTime);
         // activate run animation based on the input
-        _anim.SetFloat(_runParameterHash, input.magnitude);
+        _anim.SetFloat(_runParameterHash, running ? 2f * input.magnitude : input.magnitude);
+    }
+    
+    private void ShootBullet() {
+        if (_shootCounter < 1f) return;
+        _shootCounter = 0f;
+        
+        _anim.SetTrigger(_shootParameterHash);
+        // set fire animation speed
+        _anim.SetFloat("FireRate", _fireRate);
     }
     
     // public methods
-    public void ShootAnimation() {
-        _anim.SetTrigger(_shootParameterHash);
+    public void DeathAnimation() {
+        _anim.SetTrigger(_deathParameterHash);
+    }
+    
+    // public callback methods
+    
+    /// <summary>
+    /// this method is called when the animation fires the bullet
+    /// </summary>
+    public void ShootCallback() {
+        // setup bullet instantiation
+        BulletPool.ins.Fire();
     }
 }
