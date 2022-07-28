@@ -13,7 +13,9 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Shooting")] 
     [SerializeField] private float _fireRate = 1f;
-    
+    [SerializeField] AudioSource _as;
+    [SerializeField] AudioClip fire_clip;
+    public Transform muzzle;
     // Internal variables
     private CharacterController _controller;
     private Camera _camera;
@@ -121,6 +123,8 @@ public class PlayerController : MonoBehaviour {
     // this method is called when the animation fires the bullet
     public void ShootCallback() {
         // setup bullet instantiation
+        _as.volume = 0.2f;
+        _as.PlayOneShot(fire_clip);
         BulletPool.ins.Fire();
     }
 }

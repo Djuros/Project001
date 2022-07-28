@@ -22,6 +22,8 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     private void Start()
     {
         UpdatePlayers();
+        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 60;
     }
     void UpdatePlayers()
     {
@@ -54,7 +56,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
             photonView.RPC("SendScoreboardData", RpcTarget.All, me.name, num);
         }
 
-        if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyUp(KeyCode.Tab))
         {
             for(int i = 0; i < playerNames.Count; i++)
             {
@@ -75,7 +77,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
                 {
                     print(_id + " Taking Damage " + _value);
 
-                    players[i].GetComponent<MyMPRef>().Take_Damage((float)_value);
+                   // players[i].GetComponent<MyMPRef>().Take_Damage((float)_value);
                 }
             }
         }
