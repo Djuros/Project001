@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour {
             _anim.SetTrigger(_jumpParameterHash);
             _yForce = Mathf.Sqrt(_jumpForce * 2 * -Physics.gravity.y);
         }
-        
+
         // fall at most at the force of gravity
         desiredMove.y = Mathf.Max(Physics.gravity.y, _yForce);
         
