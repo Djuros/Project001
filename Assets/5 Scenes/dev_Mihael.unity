@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1698.8876, g: 1898.0859, b: 2946.5093, a: 1}
+  m_IndirectSpecularColor: {r: 1701.4497, g: 1899.1426, b: 2943.765, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -677,7 +677,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346505791}
-  m_LocalRotation: {x: -0.3607141, y: -0.000000081531645, z: 0.000000031529098, w: -0.93267643}
+  m_LocalRotation: {x: -0.36071366, y: -0.00000008150548, z: 0.000000031502882, w: -0.9326766}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -984,7 +984,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533211470}
-  m_LocalRotation: {x: -0.34375682, y: -0.00000008210594, z: 0.000000030048934, w: -0.9390587}
+  m_LocalRotation: {x: -0.34375665, y: -0.00000008215628, z: 0.000000030033817, w: -0.9390587}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1051,8 +1051,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631618400}
-  m_LocalRotation: {x: 0.36883312, y: -0, z: -0, w: 0.92949563}
-  m_LocalPosition: {x: 0, y: 18.502357, z: -20.376343}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2358,16 +2358,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player Wrapper
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226949928917293145, guid: 8f20c1fffb38a4f9db7243e59c9c4f98,
-        type: 3}
-      propertyPath: _runSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226949928917293145, guid: 8f20c1fffb38a4f9db7243e59c9c4f98,
-        type: 3}
-      propertyPath: _jumpForce
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f20c1fffb38a4f9db7243e59c9c4f98, type: 3}
