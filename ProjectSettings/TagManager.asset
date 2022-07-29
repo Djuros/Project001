@@ -5,7 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bullet
-  - Master
   layers:
   - Default
   - TransparentFX
@@ -14,9 +13,9 @@ TagManager:
   - Water
   - UI
   - Terrain
-  - 
-  - 
-  - 
+  - Bullet
+  - Player
+  - Obstacles
   - 
   - 
   - 

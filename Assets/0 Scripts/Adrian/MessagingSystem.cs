@@ -12,7 +12,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     public static HUD hudIns;
     public PhotonView photonView;
     public MyMPRef me;
-    public MyMPRef[] players;
+    public PlayerSpawner ps;
     public List<string> playerNames = new List<string>();
     public List<int> playerScore = new List<int>();
     public Button playAgainButton;
@@ -27,11 +27,15 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        UpdatePlayers();
+        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 60;
     }
     void UpdatePlayers()
     {
-        players = FindObjectsOfType<MyMPRef>();
+        if (PhotonNetwork.IsMasterClient) {
+            ps.players = FindObjectsOfType<MyMPRef>();
+        }
+     
     }
     private void Update()
     {
@@ -56,7 +60,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
             SendDataOnGameFinish();
         }
 
-        if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyUp(KeyCode.Tab))
         {
             ShowScoreboard();
         }
@@ -79,12 +83,12 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
             HUD.ins.playerReadyNames[i].SetActive(false);
             HUD.ins.playerStatus[i].SetActive(false);
         }
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < ps.players.Length; i++)
         {
             HUD.ins.playerReadyNames[i].SetActive(true);
             HUD.ins.playerStatus[i].SetActive(true);
-            HUD.ins.playerReadyNames[i].GetComponent<Text>().text = players[i].name.ToString();
-            if (players[i].playAgain)
+            HUD.ins.playerReadyNames[i].GetComponent<Text>().text = ps.players[i].name.ToString();
+            if (ps.players[i].playAgain)
             {
                 HUD.ins.playerStatus[i].GetComponent<Text>().text = "READY";
                 HUD.ins.playerStatus[i].GetComponent<Text>().color = Color.green;
@@ -117,11 +121,11 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
         }
         else if (!PhotonNetwork.IsMasterClient)
         {
-            for (int i = 0; i < players.Length; i++)
+            for (int i = 0; i < ps.players.Length; i++)
             {
-                if (players[i].GetComponentInParent<PhotonView>().Owner.IsMasterClient)
+                if (ps.players[i].GetComponentInParent<PhotonView>().Owner.IsMasterClient)
                 {
-                    startButtonStatus.text = "Only player: " + players[i].name.ToString() + " can start the game!";
+                    startButtonStatus.text = "Only player: " + ps.players[i].name.ToString() + " can start the game!";
                 }
             }
         }
@@ -182,11 +186,11 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     {
         if(_action == "PlayAgain")
         {
-            for(int i = 0; i < players.Length; i++)
+            for(int i = 0; i < ps.players.Length; i++)
             {
-                if (players[i].my_id == _playerID)
+                if (ps.players[i].my_id == _playerID)
                 {
-                    players[i].playAgain = true;
+                    ps.players[i].playAgain = true;
                 }
             }
         }
@@ -206,13 +210,13 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     {
         if (_action == "TakeDamange")
         {
-            for (int i = 0; i < players.Length; i++)
+            for (int i = 0; i < ps.players.Length; i++)
             {
-                if (_id == players[i].GetComponent<MyMPRef>().my_id)
+                if (_id == ps.players[i].GetComponent<MyMPRef>().my_id)
                 {
                     print(_id + " Taking Damage " + _value);
 
-                    players[i].GetComponent<MyMPRef>().Take_Damage((float)_value);
+                   // ps.players[i].GetComponent<MyMPRef>().Take_Damage((float)_value);
                 }
             }
         }
@@ -227,6 +231,53 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        print("Blaž je zani?");
+        print("Blaz je zanic");
+    }
+    public void I_Died(int _id) {
+        photonView.RPC("Death", RpcTarget.All, _id);
+    }
+    [PunRPC]
+    void Death(int _id)
+    {
+        for (int i = 0; i < ps.players.Length; i++)
+        {
+            if (_id == ps.players[i].pv.ViewID && !ps.players[i].pv.IsMine)
+            {
+                ps.players[i].Death();
+            }
+        }
+    }
+
+    public void I_Fire(int _id, int _fireRate)
+    {
+        photonView.RPC("Fire", RpcTarget.All, _id, _fireRate);
+    }
+    [PunRPC]
+    void Fire(int _id, int _fireRate)
+    {
+        for (int i = 0; i < ps.players.Length; i++)
+        {
+            if (_id == ps.players[i].pv.ViewID && !ps.players[i].pv.IsMine)
+            {
+                ps.players[i].Fire_Animation_MP(_fireRate);
+                break;
+            }
+        }
+    }
+    public void I_Jump(int _id)
+    {
+        photonView.RPC("Jump", RpcTarget.All, _id);
+    }
+    [PunRPC]
+    void Jump(int _id)
+    {
+        for (int i = 0; i < ps.players.Length; i++)
+        {
+            if (_id == ps.players[i].pv.ViewID && !ps.players[i].pv.IsMine)
+            {
+                ps.players[i].Jump_Mp();
+                break;
+            }
+        }
     }
 }

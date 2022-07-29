@@ -15,9 +15,9 @@ MonoBehaviour:
   AppSettings:
     AppIdRealtime: e85ffa5a-8e87-4cc4-959d-208466a03f8e
     AppIdFusion: 
-    AppIdChat: 
+    AppIdChat: e85ffa5a-8e87-4cc4-959d-208466a03f8e
     AppIdVoice: 
-    AppVersion: 
+    AppVersion: 1.1
     UseNameServer: 1
     FixedRegion: eu
     Server: 
@@ -43,8 +43,10 @@ MonoBehaviour:
   - ChatMessage
   - Pos
   - SendScoreboardData
-  - RestartGame
+  - Death
+  - Jump
   - PlayAgain
+  - RestartGame
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
