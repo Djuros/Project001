@@ -1266,6 +1266,7 @@ MonoBehaviour:
   capturedFlags: 0
   my_healt: 100
   pv: {fileID: 4485199418396363910}
+  playAgain: 0
   anim: {fileID: 6488643493653736395}
   _as: {fileID: 6488643493663573429}
   body_hit: {fileID: 8300000, guid: 05304016bcea01f4a91f14cb15c5b03c, type: 3}

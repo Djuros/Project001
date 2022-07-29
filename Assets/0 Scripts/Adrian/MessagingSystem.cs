@@ -33,7 +33,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     void UpdatePlayers()
     {
         if (PhotonNetwork.IsMasterClient) {
-            players = FindObjectsOfType<MyMPRef>();
+            ps.players = FindObjectsOfType<MyMPRef>();
         }
      
     }
@@ -83,12 +83,12 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
             HUD.ins.playerReadyNames[i].SetActive(false);
             HUD.ins.playerStatus[i].SetActive(false);
         }
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < ps.players.Length; i++)
         {
             HUD.ins.playerReadyNames[i].SetActive(true);
             HUD.ins.playerStatus[i].SetActive(true);
-            HUD.ins.playerReadyNames[i].GetComponent<Text>().text = players[i].name.ToString();
-            if (players[i].playAgain)
+            HUD.ins.playerReadyNames[i].GetComponent<Text>().text = ps.players[i].name.ToString();
+            if (ps.players[i].playAgain)
             {
                 HUD.ins.playerStatus[i].GetComponent<Text>().text = "READY";
                 HUD.ins.playerStatus[i].GetComponent<Text>().color = Color.green;
@@ -121,11 +121,11 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
         }
         else if (!PhotonNetwork.IsMasterClient)
         {
-            for (int i = 0; i < players.Length; i++)
+            for (int i = 0; i < ps.players.Length; i++)
             {
-                if (players[i].GetComponentInParent<PhotonView>().Owner.IsMasterClient)
+                if (ps.players[i].GetComponentInParent<PhotonView>().Owner.IsMasterClient)
                 {
-                    startButtonStatus.text = "Only player: " + players[i].name.ToString() + " can start the game!";
+                    startButtonStatus.text = "Only player: " + ps.players[i].name.ToString() + " can start the game!";
                 }
             }
         }
@@ -186,11 +186,11 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     {
         if(_action == "PlayAgain")
         {
-            for(int i = 0; i < players.Length; i++)
+            for(int i = 0; i < ps.players.Length; i++)
             {
-                if (players[i].my_id == _playerID)
+                if (ps.players[i].my_id == _playerID)
                 {
-                    players[i].playAgain = true;
+                    ps.players[i].playAgain = true;
                 }
             }
         }
@@ -226,12 +226,12 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     void SendScoreboardData(string _playerName, int _points)
     {
         playerNames.Add(_playerName);
-        playerscore.Add(_points);
+        playerScore.Add(_points);
     }
 
     public override void OnLeftRoom()
     {
-        print("Bla� je zani?");
+        print("Blaz je zanic");
     }
     public void I_Died(int _id) {
         photonView.RPC("Death", RpcTarget.All, _id);
