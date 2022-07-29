@@ -11,6 +11,8 @@ public class MyMPRef : MonoBehaviour
     public int my_id, capturedFlags;
     public float my_healt;
     public PhotonView pv;
+    public bool playAgain = false;
+
     public Animator anim;
     private readonly int _deathParameterHash = Animator.StringToHash("Death");
     public AudioSource _as;
