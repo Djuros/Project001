@@ -1112,7 +1112,7 @@ CharacterController:
   m_Enabled: 0
   serializedVersion: 2
   m_Height: 1.32
-  m_Radius: 0.5
+  m_Radius: 1.1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -1130,6 +1130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eea5ccff72684e4390bdf697c134129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myMp: {fileID: 6488643493663573431}
   _walkSpeed: 6
   _runSpeed: 10
   _rotateSpeed: 15
@@ -1273,6 +1274,7 @@ MonoBehaviour:
   name_label: {fileID: 9022432484332232482}
   ch: {fileID: 6488643493653736399}
   pc: {fileID: 6488643493653736392}
+  rb: {fileID: 0}
 --- !u!114 &6488643493663573428
 MonoBehaviour:
   m_ObjectHideFlags: 0

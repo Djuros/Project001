@@ -10,9 +10,9 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     public static HUD hudIns;
     public PhotonView photonView;
     public MyMPRef me;
-    public MyMPRef[] players;
+    public PlayerSpawner ps;
     public List<string> playerNames = new List<string>();
-    public List<int> playerScore = new List<int>();
+    public List<int> playerscore = new List<int>();
 
     private void Awake()
     {
@@ -21,17 +21,10 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        UpdatePlayers();
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
     }
-    void UpdatePlayers()
-    {
-        if (PhotonNetwork.IsMasterClient) {
-            players = FindObjectsOfType<MyMPRef>();
-        }
-     
-    }
+
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.D))
@@ -71,13 +64,13 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     {
         if (_action == "TakeDamange")
         {
-            for (int i = 0; i < players.Length; i++)
+            for (int i = 0; i < ps.players.Length; i++)
             {
-                if (_id == players[i].GetComponent<MyMPRef>().my_id)
+                if (_id == ps.players[i].GetComponent<MyMPRef>().my_id)
                 {
                     print(_id + " Taking Damage " + _value);
 
-                   // players[i].GetComponent<MyMPRef>().Take_Damage((float)_value);
+                   // ps.players[i].GetComponent<MyMPRef>().Take_Damage((float)_value);
                 }
             }
         }
@@ -87,6 +80,53 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     void SendScoreboardData(string _playerName, int _points)
     {
         playerNames.Add(_playerName);
-        playerScore.Add(_points);
+        playerscore.Add(_points);
+    }
+    public void I_Died(int _id) {
+        photonView.RPC("Death", RpcTarget.All, _id);
+    }
+    [PunRPC]
+    void Death(int _id)
+    {
+        for (int i = 0; i < ps.players.Length; i++)
+        {
+            if (_id == ps.players[i].pv.ViewID && !ps.players[i].pv.IsMine)
+            {
+                ps.players[i].Death();
+            }
+        }
+    }
+
+    public void I_Fire(int _id, int _fireRate)
+    {
+        photonView.RPC("Fire", RpcTarget.All, _id, _fireRate);
+    }
+    [PunRPC]
+    void Fire(int _id, int _fireRate)
+    {
+        for (int i = 0; i < ps.players.Length; i++)
+        {
+            if (_id == ps.players[i].pv.ViewID && !ps.players[i].pv.IsMine)
+            {
+                ps.players[i].Fire_Animation_MP(_fireRate);
+                break;
+            }
+        }
+    }
+    public void I_Jump(int _id)
+    {
+        photonView.RPC("Jump", RpcTarget.All, _id);
+    }
+    [PunRPC]
+    void Jump(int _id)
+    {
+        for (int i = 0; i < ps.players.Length; i++)
+        {
+            if (_id == ps.players[i].pv.ViewID && !ps.players[i].pv.IsMine)
+            {
+                ps.players[i].Jump_Mp();
+                break;
+            }
+        }
     }
 }

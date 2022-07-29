@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+    public MyMPRef myMp;
     // Inspector assigned
     [Header("Movement")]
     [SerializeField] [Range(1, 20)] int _walkSpeed = 10;
@@ -22,15 +23,14 @@ public class PlayerController : MonoBehaviour {
     public Animator _anim;
     private Player _player;
     private float _shootCounter;
-
     private float _yForce;
 
     // animation parameter hashes
-    private readonly int _runParameterHash = Animator.StringToHash("Run");
-    private readonly int _shootParameterHash = Animator.StringToHash("Shoot");
-    private readonly int _fireRateParameterHash = Animator.StringToHash("FireRate");
-    private readonly int _deathParameterHash = Animator.StringToHash("Death");
-    private readonly int _jumpParameterHash = Animator.StringToHash("Jump");
+    public readonly int _runParameterHash = Animator.StringToHash("Run");
+    public readonly int _shootParameterHash = Animator.StringToHash("Shoot");
+    public readonly int _fireRateParameterHash = Animator.StringToHash("FireRate");
+    public readonly int _deathParameterHash = Animator.StringToHash("Death");
+    public readonly int _jumpParameterHash = Animator.StringToHash("Jump");
 
     // Unity event methods
     private void Start() {
@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour {
         _anim = GetComponent<Animator>();
         _player = GetComponent<Player>();
         _camera = Camera.main;
+      
     }
 
     private void Update() {
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour {
 
     private void FixedUpdate() {
         // dont move if dead
-        if (_player.Dead) return;
+        if (myMp.dead) return;
         
         // get input
         var horizontal = Input.GetAxis("Horizontal");
@@ -93,6 +94,7 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButtonDown("Jump") && _controller.isGrounded) {
             _anim.SetTrigger(_jumpParameterHash);
             _yForce = Mathf.Sqrt(_jumpForce * 2 * -Physics.gravity.y);
+            MessagingSystem.ins.I_Jump(myMp.pv.ViewID);
         }
         
         // fall at most at the force of gravity
@@ -122,9 +124,11 @@ public class PlayerController : MonoBehaviour {
     
     // this method is called when the animation fires the bullet
     public void ShootCallback() {
+        if (myMp.dead) { return; }
         // setup bullet instantiation
         _as.volume = 0.2f;
         _as.PlayOneShot(fire_clip);
         BulletPool.ins.Fire();
+        MessagingSystem.ins.I_Fire(myMp.pv.ViewID,0);
     }
 }

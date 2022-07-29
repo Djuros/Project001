@@ -3439,9 +3439,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   photonView: {fileID: 2014602625}
   me: {fileID: 0}
-  players: []
+  ps: {fileID: 917351016}
   playerNames: []
-  playerScore: 
+  playerscore: 
 --- !u!4 &2014602624
 Transform:
   m_ObjectHideFlags: 0

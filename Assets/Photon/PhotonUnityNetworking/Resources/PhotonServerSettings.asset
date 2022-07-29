@@ -43,6 +43,8 @@ MonoBehaviour:
   - ChatMessage
   - Pos
   - SendScoreboardData
+  - Death
+  - Jump
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

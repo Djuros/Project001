@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour {
     [SerializeField] private Rigidbody rb;
     public ParticleSystem hit_effect, blood_hit_effect;
     public AudioSource _as;
+    public bool fired;
     private void Start() {
         Invoke("Back_To_Pool", remove_at_time);
     }
@@ -22,9 +23,15 @@ public class Bullet : MonoBehaviour {
         rb.velocity = BulletPool.ins.muzzle.transform.forward * _speed;
         ResetEffect();
     }
+    private void Update()
+    {
+        if (transform.position.y < 1000 && !fired) {
+            fired = true;
+            Invoke("ResetBullet", 10);
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
-        print("BL " + other.name);
         if (other.CompareTag("Player"))
         {
             blood_hit_effect.transform.parent = null;
@@ -40,6 +47,12 @@ public class Bullet : MonoBehaviour {
             Back_To_Pool();
         }
     }
+    private void ResetBullet()
+    {
+       // fired = false;
+        Back_To_Pool();
+        ResetEffect();
+    }
     public void Back_To_Pool() {
         transform.position = new Vector3(0,10000,0);
         transform.rotation = Quaternion.identity;
@@ -53,6 +66,5 @@ public class Bullet : MonoBehaviour {
         hit_effect.transform.localPosition = new Vector3(0,0,-5f);
         blood_hit_effect.transform.SetParent(transform);
         blood_hit_effect.transform.localPosition = new Vector3(0, 0, -5f);
-
     }
 }
