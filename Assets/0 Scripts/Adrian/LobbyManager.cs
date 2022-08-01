@@ -25,18 +25,17 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1) // Show play button only to room master
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2) 
         {
             startButton.SetActive(true);
         }
         else
         {
             startButton.SetActive(false);
-
         }
     }
 
-    public void OnClickCreate() // On click button check the value if true create new room
+    public void OnClickCreate() 
     {
         if(roomInputField.text.Length >= 1)
         {
@@ -44,16 +43,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnJoinedRoom() // On joining room set room name and display new panel
+    public override void OnJoinedRoom() 
     {
         lobbyPanel.SetActive(false);
         roomPanel.SetActive(true);
         roomName.text = "Welcome to room: " + PhotonNetwork.CurrentRoom.Name;
-
-        // send to everyone your id
     }
 
-    public override void OnRoomListUpdate(List<RoomInfo> roomList) // Update active room list
+    public override void OnRoomListUpdate(List<RoomInfo> roomList) 
     {
         if(Time.time >= nextUpdateTime)
         {
@@ -90,7 +87,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(joinRoomInput.text);
     }
 
-    public void OnClickLeaveRoom() // Leave Room
+    public void OnClickLeaveRoom() 
     {
         PhotonNetwork.LeaveRoom();
     }
