@@ -17,10 +17,10 @@ public class FlagSpawner : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+       /* if (Input.GetMouseButtonDown(1))
         {
             ReSpawnFlags();
-        }
+        }*/
     }
    
     void SpawnFlags()

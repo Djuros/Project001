@@ -9,14 +9,27 @@ public class PlayerSpawner : MonoBehaviour
     public MyMPRef[] players;
     public List<Transform> spawnPoints = new List<Transform>();
     public Cinemachine.CinemachineVirtualCamera vc;
+    public bool debug;
     private void Start()
     {
         MessagingSystem.ins.me = PhotonNetwork.Instantiate("Player", transform.position, Quaternion.identity).GetComponent<MyMPRef>();
         Setup_Local_Systems();
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && !debug)
         {
             Shufle_Spawn_Points();
             PositionDeleyed();
+        }
+        if (debug)
+        {
+            DebugPositioning();
+        }
+    }
+    void DebugPositioning() {
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].transform.position = spawnPoints[i].position;
+            players[i].GetComponent<PlayerController>().enabled = true;
+            players[i].GetComponent<CharacterController>().enabled = true;
         }
     }
     void PositionDeleyed() {
@@ -45,7 +58,7 @@ public class PlayerSpawner : MonoBehaviour
         vc.Follow = MessagingSystem.ins.me.transform;
         vc.LookAt = MessagingSystem.ins.me.transform;
         vc.enabled = true;
-        MessagingSystem.ins.me.ch.enabled = true;
+        //MessagingSystem.ins.me.ch.enabled = true;
         MessagingSystem.ins.me.pc.enabled = true;
         BulletPool.ins.muzzle = MessagingSystem.ins.me.gameObject.GetComponent<PlayerController>().muzzle;
         BulletPool.ins.Spawn_Bullets();

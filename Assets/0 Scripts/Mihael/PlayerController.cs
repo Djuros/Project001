@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour {
         // only hit colliders on terrain layer
         var mask = LayerMask.GetMask("Terrain");
         
-        if (Physics.Raycast(ray, out var hit, 50f, mask)) {
+        if (Physics.Raycast(ray, out var hit, 1000f)) {
             var direction = hit.point - transform.position;
             var newRotation = Vector3.RotateTowards(transform.forward, direction, _rotateSpeed * Time.deltaTime, 0f);
             // only rotate around y axis
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour {
         if (input.sqrMagnitude > 1) input.Normalize();
         
         // move along the global axis:
-        var desiredMove = Vector3.forward * input.y + Vector3.right * input.x;
+        var desiredMove = transform.forward * input.y + transform.right * input.x;
         // set movement speed
         var running = Input.GetButton("Run");
         desiredMove = running ? desiredMove * _runSpeed : desiredMove * _walkSpeed;

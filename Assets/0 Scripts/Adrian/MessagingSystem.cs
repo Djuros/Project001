@@ -15,7 +15,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     public PlayerSpawner ps;
     public List<string> playerNames = new List<string>();
     public List<int> playerScore = new List<int>();
-    public Button playAgainButton;
+    public Button startButton, playAgainButton, leaveButton;
     public bool gameEnded = false;
     public Text startButtonStatus, PlayersTextStatus;
     public int readyCounter = 0;
@@ -39,36 +39,28 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.D))
-        {
-            int pID = 0;
-            var ray = new Ray(me.transform.position, me.transform.forward);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 100))
-            {
-                if(hit.transform.gameObject.CompareTag("Player"))
-                {
-                    pID = hit.transform.gameObject.GetPhotonView().ViewID;
-                }
-            }
-            photonView.RPC("ChatMessage", RpcTarget.All, "TakeDamange", pID, 10);
-        }
-
         if (Input.GetKeyUp(KeyCode.G))
         {
             SendDataOnGameFinish();
         }
 
-        if (Input.GetKeyUp(KeyCode.Tab))
+        if (Input.GetKeyUp(KeyCode.Tab) && !gameEnded)
         {
-            ShowScoreboard();
+            playAgainButton.interactable = false;
+            leaveButton.interactable = false;
+            playerNames.Clear();
+            playerScore.Clear();
+            SendMeData();
+            Invoke("ShowScoreboard", 0.6f);
         }
 
         if (!gameEnded)
         {
             return;
         }
+
+        playAgainButton.interactable = true;
+        leaveButton.interactable = true;
 
         UpdatePlayers();
 
@@ -112,7 +104,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient && gameEnded && readyCounter >= PhotonNetwork.CurrentRoom.PlayerCount)
         {
-            playAgainButton.interactable = true;
+            startButton.interactable = true;
             startButtonStatus.text = "";
         }
         else if (readyCounter < PhotonNetwork.CurrentRoom.PlayerCount)
@@ -133,8 +125,12 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
 
     public void SendDataOnGameFinish()
     {
-        int num = Random.Range(2, 20);
-        photonView.RPC("SendScoreboardData", RpcTarget.All, me.name, num);
+        photonView.RPC("SendScoreboardData", RpcTarget.All, me.name, me.score);
+    }
+
+    public void SendMeData()
+    {
+        photonView.RPC("SendMeData", RpcTarget.All, "Send");
     }
 
     public void ShowScoreboard()
@@ -163,7 +159,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
             largest = 0;
             name = "";
         }
-        gameEnded = true;
+      
         HUD.ins.OnGameEnded();
     }
 
@@ -206,27 +202,19 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void ChatMessage(string _action, int _id, int _value)
-    {
-        if (_action == "TakeDamange")
-        {
-            for (int i = 0; i < ps.players.Length; i++)
-            {
-                if (_id == ps.players[i].GetComponent<MyMPRef>().my_id)
-                {
-                    print(_id + " Taking Damage " + _value);
-
-                   // ps.players[i].GetComponent<MyMPRef>().Take_Damage((float)_value);
-                }
-            }
-        }
-    }
-
-    [PunRPC]
     void SendScoreboardData(string _playerName, int _points)
     {
         playerNames.Add(_playerName);
         playerScore.Add(_points);
+    }
+
+    [PunRPC]
+    void SendMeData(string _info)
+    {
+        if (_info == "Send")
+        {
+            photonView.RPC("SendScoreboardData", RpcTarget.All, me.name, me.score);
+        }
     }
 
     public override void OnLeftRoom()
