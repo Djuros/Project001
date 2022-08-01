@@ -12,8 +12,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public InputField roomInputField, joinRoomInput;
     public GameObject lobbyPanel, roomPanel, startButton;
     public GameObject[] playersInRoomTextsGO;
-    public Text roomName;
+    public Text roomName, numberOfPlayers;
     public TextMeshProUGUI aloneInRoomText;
+    public Slider numberOfPlayersSlider;
 
     public RoomItem roomItemPrefab;
     List<RoomItem> roomItemsList = new List<RoomItem>();
@@ -69,7 +70,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if(roomInputField.text.Length >= 1)
         {
-            PhotonNetwork.CreateRoom(roomInputField.text);
+            byte conv = Convert.ToByte(numberOfPlayersSlider.value);
+            PhotonNetwork.CreateRoom(roomInputField.text, new RoomOptions { MaxPlayers = conv});
         }
     }
 
@@ -99,9 +101,12 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         foreach(RoomInfo room in list)
         {
-            RoomItem newRoom = Instantiate(roomItemPrefab, contenctObject);
-            newRoom.SetRoomName(room.Name);
-            roomItemsList.Add(newRoom);
+            if(room.MaxPlayers != room.PlayerCount && room.IsOpen)
+            {
+                RoomItem newRoom = Instantiate(roomItemPrefab, contenctObject);
+                newRoom.SetRoomName(room.Name);
+                roomItemsList.Add(newRoom);
+            }
         }
     }
 
@@ -130,12 +135,18 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnClickPlayButton()
     {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel("AdrianGameScene");
     }
 
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
+    }
+
+    public void OnNumberOfPlayersSliderValue()
+    {
+        numberOfPlayers.text = numberOfPlayersSlider.value.ToString();
     }
 
     public void QuitButton()
