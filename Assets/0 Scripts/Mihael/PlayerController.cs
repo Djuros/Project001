@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour {
         if (input.sqrMagnitude > 1) input.Normalize();
         
         // move along the global axis:
-        var desiredMove = Vector3.forward * input.y + Vector3.right * input.x;
+        var desiredMove = transform.forward * input.y + transform.right * input.x;
         // set movement speed
         var running = Input.GetButton("Run");
         desiredMove = running ? desiredMove * _runSpeed : desiredMove * _walkSpeed;
