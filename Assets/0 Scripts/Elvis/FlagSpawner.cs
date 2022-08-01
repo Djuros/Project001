@@ -46,38 +46,4 @@ public class FlagSpawner : MonoBehaviour
             randomized_pool.Remove(tmp_sp);
         }
     }
-
-
-    /*void Update()
-    {
-        if (flagCount < flagLimit)
-        {
-            SpawnEnabled = true;
-            SpawnFlag();
-        } else if (flagCount >= flagLimit)
-        {
-            SpawnEnabled = false;
-        }
-
-        //------- TESTING RESPAWN -------
-        if (Input.GetMouseButtonDown(0))
-        {
-            Destroy(flag);
-            flagCount--;
-        }
-        //-------------------------------
-
-
-    }
-
-    void SpawnFlag()
-    {
-        if (SpawnEnabled)
-        {
-            randomSpawnPoint = Random.Range(0, spawnPoints.Length);
-
-            flag = Instantiate(flag_prefab, spawnPoints[randomSpawnPoint].position, Quaternion.identity);
-            flagCount++;
-        }
-    }*/
 }
