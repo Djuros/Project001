@@ -21,6 +21,7 @@ public class MyMPRef : MonoBehaviour
     public TextMeshPro name_label;
     public CharacterController ch;
     public PlayerController pc;
+    public PickupManager pum;
     public Rigidbody rb;
     bool in_jump;
     private void Start()
@@ -79,6 +80,9 @@ public class MyMPRef : MonoBehaviour
                 }
             }
         }
+        if (Input.GetKeyUp(KeyCode.O)) {
+            Take_Damage(500);
+        }
     }
     public void Take_Damage(float _amount)
     {
@@ -98,6 +102,11 @@ public class MyMPRef : MonoBehaviour
         dead = true;
         _as.PlayOneShot(death_clip);
         anim.SetTrigger(_deathParameterHash);
+        if (pum.flag_anchor.childCount > 0) {
+            Transform _flag = pum.flag_anchor.GetChild(0);
+            _flag.parent = null;
+            _flag.localScale = new Vector3(1,1,1);
+        }
     }
     [PunRPC]
     public void Pos(string _x, string _y, string _z)
@@ -116,4 +125,5 @@ public class MyMPRef : MonoBehaviour
         anim.Play("Jumping", 0);
         in_jump = true;
     }
+
 }
