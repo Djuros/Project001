@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour {
         // only hit colliders on terrain layer
         var mask = LayerMask.GetMask("Terrain");
         
-        if (Physics.Raycast(ray, out var hit, 50f, mask)) {
+        if (Physics.Raycast(ray, out var hit, 1000f)) {
             var direction = hit.point - transform.position;
             var newRotation = Vector3.RotateTowards(transform.forward, direction, _rotateSpeed * Time.deltaTime, 0f);
             // only rotate around y axis

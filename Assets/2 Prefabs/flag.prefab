@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4318508525544378360}
   - component: {fileID: 4318508525545705434}
   - component: {fileID: 4318508525546671386}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FlagLogo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,9 +94,8 @@ GameObject:
   - component: {fileID: 4318508525544378362}
   - component: {fileID: 4318508525535322138}
   - component: {fileID: 4057742439672982383}
-  - component: {fileID: 2620904940831098643}
   - component: {fileID: 4309535776314304347}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: flag
   m_TagString: flag
   m_Icon: {fileID: 0}
@@ -153,18 +152,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.84, y: 2, z: 2}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &2620904940831098643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4318508525544674266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3192a9b3cb29fc140a4b825a49f3d4e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &4309535776314304347
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -192,7 +179,7 @@ GameObject:
   - component: {fileID: 4318508525544378366}
   - component: {fileID: 4318508525545705432}
   - component: {fileID: 4318508525546671384}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
