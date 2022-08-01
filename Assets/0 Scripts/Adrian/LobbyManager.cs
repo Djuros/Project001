@@ -33,6 +33,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             startButton.SetActive(false);
         }
+        if (Input.GetKeyUp(KeyCode.L)) { OnClickPlayButton(); }
     }
 
     public void OnClickCreate() 
@@ -100,7 +101,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnClickPlayButton()
     {
-        PhotonNetwork.LoadLevel("AdrianGameScene");
+        PhotonNetwork.LoadLevel("GameScene");
     }
 
     public override void OnConnectedToMaster()
