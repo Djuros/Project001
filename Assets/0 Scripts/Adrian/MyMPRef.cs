@@ -8,7 +8,7 @@ using System.Globalization;
 using TMPro;
 public class MyMPRef : MonoBehaviour
 {
-    public int my_id, capturedFlags;
+    public int my_id, score;
     public float my_healt;
     public PhotonView pv;
     public bool playAgain = false;
@@ -25,6 +25,7 @@ public class MyMPRef : MonoBehaviour
     bool in_jump;
     private void Start()
     {
+        score = Random.RandomRange(1, 200);
         my_healt = 100;
         if (pv.IsMine)
         {

@@ -1263,7 +1263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   my_id: 0
-  capturedFlags: 0
+  score: 0
   my_healt: 100
   pv: {fileID: 4485199418396363910}
   playAgain: 0
