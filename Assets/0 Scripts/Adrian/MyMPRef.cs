@@ -9,7 +9,7 @@ using TMPro;
 public class MyMPRef : MonoBehaviour
 {
     public int my_id, score;
-    public float my_healt;
+    public float current_health, max_health;
     public PhotonView pv;
     public bool playAgain = false;
 
@@ -26,8 +26,7 @@ public class MyMPRef : MonoBehaviour
     bool in_jump;
     private void Start()
     {
-        score = Random.RandomRange(1, 200);
-        my_healt = 100;
+        current_health = max_health;
         if (pv.IsMine)
         {
             this.gameObject.name = PhotonNetwork.NickName;
@@ -48,6 +47,12 @@ public class MyMPRef : MonoBehaviour
     float cnt;
     private void Update()
     {
+        OthersPlayersAnimationCallback();
+        if (Input.GetKeyUp(KeyCode.O)) {
+            Take_Damage(500);
+        }
+    }
+    void OthersPlayersAnimationCallback() {
         if (!pv.IsMine)
         {
             if (!in_jump)
@@ -74,24 +79,23 @@ public class MyMPRef : MonoBehaviour
                     }
                 }
             }
-            else {
-                if (transform.position.y < 0.1f) {
+            else
+            {
+                if (transform.position.y < 0.1f)
+                {
                     in_jump = false;
                 }
             }
-        }
-        if (Input.GetKeyUp(KeyCode.O)) {
-            Take_Damage(500);
         }
     }
     public void Take_Damage(float _amount)
     {
         if (!pv.IsMine) { return; }
         _as.volume = 0.6f;
-        my_healt -= _amount;
-        HUD.ins.fill_bar.fillAmount = my_healt / 100;
+        current_health -= _amount;
+        HUD.ins.fill_bar.fillAmount = current_health / max_health;
         _as.PlayOneShot(body_hit);
-        if (my_healt <= 0 && !dead) { Die(); }
+        if (current_health <= 0 && !dead) { Die(); }
     }
     void Die() {
         Death();

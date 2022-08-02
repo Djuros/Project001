@@ -5,6 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Bullet
+  - flag
+  - SpawnPoint
+  - FlagDelivery
+  - SF_Door
+  - Health
+  - Speed
+  - FireRate
+  - Damage
   layers:
   - Default
   - TransparentFX

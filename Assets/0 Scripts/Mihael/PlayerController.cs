@@ -7,13 +7,13 @@ public class PlayerController : MonoBehaviour {
     public MyMPRef myMp;
     // Inspector assigned
     [Header("Movement")]
-    [SerializeField] [Range(1, 20)] int _walkSpeed = 10;
-    [SerializeField] [Range(1, 20)] private int _runSpeed = 20;
+    public int _walkSpeed = 10;
+    public int _runSpeed = 20;
     [SerializeField] private int _rotateSpeed = 5;
     [SerializeField] private float _jumpForce = 4f;
 
     [Header("Shooting")] 
-    [SerializeField] private float _fireRate = 1f;
+    public float _fireRate = 1f;
     [SerializeField] AudioSource _as;
     [SerializeField] AudioClip fire_clip;
     public Transform muzzle;

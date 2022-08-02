@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class FlagSpawner : MonoBehaviour
 {
     public List<Transform> spawnPoints, randomized_pool = new List<Transform>();
@@ -28,7 +28,7 @@ public class FlagSpawner : MonoBehaviour
         randomized_pool = new List<Transform>(spawnPoints);
         for (int i = 0; i < flagLimit; i++) 
         {
-            GameObject _go = Instantiate(flag_prefab, Vector3.zero, Quaternion.identity);
+            GameObject _go = PhotonNetwork.Instantiate("flag", Vector3.zero, Quaternion.identity);
             flags.Add(_go);
             Transform tmp_sp = randomized_pool[Random.Range(0, randomized_pool.Count)];
             _go.transform.position = tmp_sp.position;
