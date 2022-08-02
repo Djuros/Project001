@@ -61,7 +61,7 @@ public class PlayerSpawner : MonoBehaviour
         //MessagingSystem.ins.me.ch.enabled = true;
         MessagingSystem.ins.me.pc.enabled = true;
         BulletPool.ins.muzzle = MessagingSystem.ins.me.gameObject.GetComponent<PlayerController>().muzzle;
-        BulletPool.ins.Spawn_Bullets();
+        BulletPool.ins.Spawn_Bullets("Bullet_10");
     }
     void Shufle_Spawn_Points()
     {

@@ -1444,7 +1444,7 @@ MonoBehaviour:
   _runSpeed: 10
   _rotateSpeed: 15
   _jumpForce: 6
-  _fireRate: 10
+  _fireRate: 5
   _as: {fileID: 6488643493663573429}
   fire_clip: {fileID: 8300000, guid: 904946e9b9312644f9562b15c9cf0b7e, type: 3}
   muzzle: {fileID: 9022432484548401197}
@@ -1573,7 +1573,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   my_id: 0
   score: 0
-  my_healt: 100
+  current_health: 100
+  max_health: 100
   pv: {fileID: 4485199418396363910}
   playAgain: 0
   anim: {fileID: 6488643493653736395}
@@ -1616,6 +1617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mymp: {fileID: 6488643493663573431}
   flag_anchor: {fileID: 6743038792626651533}
+  flag: {fileID: 0}
 --- !u!1 &6488643493663087087
 GameObject:
   m_ObjectHideFlags: 0

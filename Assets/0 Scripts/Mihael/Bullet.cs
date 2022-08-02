@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour {
     public ParticleSystem hit_effect, blood_hit_effect;
     public AudioSource _as;
     public bool fired;
+    public float damage;
     private void Start() {
         Invoke("Back_To_Pool", remove_at_time);
     }
@@ -36,7 +37,7 @@ public class Bullet : MonoBehaviour {
         {
             blood_hit_effect.transform.parent = null;
             blood_hit_effect.Play();
-            other.GetComponent<MyMPRef>().Take_Damage(10);
+            other.GetComponent<MyMPRef>().Take_Damage(damage);
             Back_To_Pool();
           
         }
