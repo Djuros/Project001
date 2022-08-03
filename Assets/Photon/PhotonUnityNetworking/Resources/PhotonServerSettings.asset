@@ -48,6 +48,9 @@ MonoBehaviour:
   - PlayAgain
   - RestartGame
   - SendMeData
+  - Respawn
+  - On_Flag_Collected
+  - End_The_Game
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

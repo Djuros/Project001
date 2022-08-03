@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1713305754
 Transform:
   m_ObjectHideFlags: 0
@@ -42,7 +42,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713305753}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713305753}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
@@ -285,7 +285,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1919751026}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79de9fa63df8f144b8594c7650097aa3, type: 3}
   m_Name: 
@@ -1466,7 +1466,10 @@ MonoBehaviour:
   _as: {fileID: 6488643493663573429}
   fire_clip: {fileID: 8300000, guid: 904946e9b9312644f9562b15c9cf0b7e, type: 3}
   muzzle: {fileID: 9022432484548401197}
+  _controller: {fileID: 6488643493653736399}
+  _camera: {fileID: 1713305757}
   _anim: {fileID: 6488643493653736395}
+  _player: {fileID: 5160907581649166671}
 --- !u!114 &5160907581649166671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1605,6 +1608,10 @@ MonoBehaviour:
   pc: {fileID: 6488643493653736392}
   pum: {fileID: 6271728909998286929}
   rb: {fileID: 0}
+  cam: {fileID: 1713305757}
+  rc: {fileID: 1919751029}
+  pm: {fileID: 6271728909998286929}
+  spawn_pos: {x: 0, y: 0, z: 0}
 --- !u!114 &6488643493663573428
 MonoBehaviour:
   m_ObjectHideFlags: 0

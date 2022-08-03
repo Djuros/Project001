@@ -19,7 +19,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     public bool gameEnded = false;
     public Text startButtonStatus, PlayersTextStatus;
     public int readyCounter = 0;
-
+    public int flags_to_turn_in;
     private void Awake()
     {
         ins = this;
@@ -35,7 +35,21 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient) {
             ps.players = FindObjectsOfType<MyMPRef>();
         }
-     
+    }
+    public void End_Game() {
+        SendMeData();
+        Invoke("ShowScoreboard", 0.6f);
+        playAgainButton.interactable = true;
+        leaveButton.interactable = true;
+        photonView.RPC("End_The_Game", RpcTarget.All);
+    }
+    [PunRPC]
+    public void End_The_Game()
+    {
+        SendMeData();
+        Invoke("ShowScoreboard", 0.6f);
+        playAgainButton.interactable = true;
+        leaveButton.interactable = true;
     }
     private void Update()
     {
@@ -58,12 +72,9 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
         {
             return;
         }
-
         playAgainButton.interactable = true;
         leaveButton.interactable = true;
-
         UpdatePlayers();
-
         SetPlayerStatuses();
     }
 
@@ -235,7 +246,22 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
             }
         }
     }
+    public void I_Respawned(int _id)
+    {
+        photonView.RPC("Respawn", RpcTarget.All, _id);
+    }
+    [PunRPC]
+    public void Respawn(int _id) {
+        for (int i = 0; i < ps.players.Length; i++)
+        {
+            if (_id == ps.players[i].pv.ViewID && !ps.players[i].pv.IsMine)
+            {
+                ps.players[i].anim.Play("Idle",0);
+            }
+        }
+    }
 
+    
     public void I_Fire(int _id, int _fireRate)
     {
         photonView.RPC("Fire", RpcTarget.All, _id, _fireRate);
@@ -267,5 +293,14 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
                 break;
             }
         }
+    }
+    public void Flag_Collected() {
+        photonView.RPC("On_Flag_Collected", RpcTarget.All);
+    }
+    [PunRPC]
+    public void On_Flag_Collected()
+    {
+        flags_to_turn_in--;
+        if (flags_to_turn_in == 0) { End_Game(); }
     }
 }

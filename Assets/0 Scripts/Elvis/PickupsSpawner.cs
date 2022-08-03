@@ -12,7 +12,7 @@ public class PickupsSpawner : MonoBehaviour
 
     private void Start()
     {
-        SpawnPickups();
+        Invoke("SpawnPickups", 4);
     }
    
 
@@ -30,16 +30,5 @@ public class PickupsSpawner : MonoBehaviour
             }
         }
         
-    }
-    public void RespawnPickups()
-    {
-        randomized_pool = new List<Transform>(spawnPoints);
-        for (int i = 0; i < pickups.Count; i++)
-        {
-            pickups[i].SetActive(true);
-            Transform tmp_sp = randomized_pool[Random.Range(0, randomized_pool.Count)];
-            pickups[i].transform.position = tmp_sp.position;
-            randomized_pool.Remove(tmp_sp);
-        }
     }
 }

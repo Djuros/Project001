@@ -13,18 +13,11 @@ public class FlagSpawner : MonoBehaviour
 
     private void Start()
     {
-        SpawnFlags();
+        Invoke("SpawnFlags", 3);
     }
-    void Update()
-    {
-       /* if (Input.GetMouseButtonDown(1))
-        {
-            ReSpawnFlags();
-        }*/
-    }
-   
     void SpawnFlags()
     {
+        if (!PhotonNetwork.IsMasterClient) { return; }
         randomized_pool = new List<Transform>(spawnPoints);
         for (int i = 0; i < flagLimit; i++) 
         {
@@ -34,16 +27,6 @@ public class FlagSpawner : MonoBehaviour
             _go.transform.position = tmp_sp.position;
             randomized_pool.Remove(tmp_sp);
         }
-    }
-    public void ReSpawnFlags()
-    {
-        randomized_pool = new List<Transform>(spawnPoints);
-        for (int i = 0; i < flags.Count; i++)
-        {
-            flags[i].SetActive(true);
-            Transform tmp_sp = randomized_pool[Random.Range(0, randomized_pool.Count)];
-            flags[i].transform.position = tmp_sp.position;
-            randomized_pool.Remove(tmp_sp);
-        }
+        MessagingSystem.ins.flags_to_turn_in = flags.Count;
     }
 }

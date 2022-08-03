@@ -18,10 +18,10 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] AudioClip fire_clip;
     public Transform muzzle;
     // Internal variables
-    private CharacterController _controller;
-    private Camera _camera;
+    public CharacterController _controller;
+    public Camera _camera;
     public Animator _anim;
-    private Player _player;
+    public Player _player;
     private float _shootCounter;
     private float _yForce;
 
@@ -32,15 +32,7 @@ public class PlayerController : MonoBehaviour {
     public readonly int _deathParameterHash = Animator.StringToHash("Death");
     public readonly int _jumpParameterHash = Animator.StringToHash("Jump");
 
-    // Unity event methods
-    private void Start() {
-        // get components
-        _controller = GetComponent<CharacterController>();
-        _anim = GetComponent<Animator>();
-        _player = GetComponent<Player>();
-        _camera = Camera.main;
-      
-    }
+    
 
     private void Update() {
         _shootCounter += Time.deltaTime * _fireRate;
