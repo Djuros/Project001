@@ -29,12 +29,12 @@ public class BulletPool : MonoBehaviour
             _bullet.transform.position = new Vector3(0,10000,0);
         }
     }
-    public void Switch_To_Stronger_Bullets() {
+    public void Switch_The_Bullets(string _bullet_type) {
         for (int i = 0; i < bullets.Count; i++) {
             PhotonNetwork.Destroy(bullets[i].GetComponent<PhotonView>());
         }
         bullets.Clear();
-        Spawn_Bullets("Bullet_20");
+        Spawn_Bullets(_bullet_type);
     }
     public void Fire()
     {

@@ -19,16 +19,17 @@ public class PickupManager : MonoBehaviour
         else if (other.CompareTag("FlagDelivery"))
         {
             if (flag_anchor.childCount == 0) { return; }
-            flag.parent = other.transform;
+            flag.parent = other.transform.GetChild(0);
             flag.localPosition = Vector3.zero;
-            flag.localEulerAngles = new Vector3(0, 0, 0);
+            flag.localEulerAngles = new Vector3(90, 0, 0);
             flag.localScale = new Vector3(1f, 1f, 1f);
             MessagingSystem.ins.me.score++;
+            MessagingSystem.ins.Flag_Collected();
         }
         else if (other.CompareTag("Damage"))
         {
             // instantiate stronger bullets at bullet pool
-            BulletPool.ins.Switch_To_Stronger_Bullets();
+            BulletPool.ins.Switch_The_Bullets("Bullet_20");
             PhotonNetwork.Destroy(other.transform.parent.GetComponent<PhotonView>());
         }
         else if (other.CompareTag("Health"))
