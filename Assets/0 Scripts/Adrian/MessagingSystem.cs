@@ -16,7 +16,7 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
     public List<string> playerNames = new List<string>();
     public List<int> playerScore = new List<int>();
     public Button startButton, playAgainButton, leaveButton;
-    public bool gameEnded = false;
+    public bool gameEnded = false, scoreboardOpened;
     public Text startButtonStatus, PlayersTextStatus;
     public int readyCounter = 0;
     public int flags_to_turn_in;
@@ -58,14 +58,19 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
             SendDataOnGameFinish();
         }
 
-        if (Input.GetKeyUp(KeyCode.Tab) && !gameEnded)
+        if (Input.GetKeyUp(KeyCode.Tab) && !gameEnded && !scoreboardOpened)
         {
             playAgainButton.interactable = false;
-            leaveButton.interactable = false;
+            leaveButton.interactable = true;
+            scoreboardOpened = true;
             playerNames.Clear();
             playerScore.Clear();
             SendMeData();
             Invoke("ShowScoreboard", 0.6f);
+        }else if (Input.GetKeyUp(KeyCode.Tab) && !gameEnded && scoreboardOpened) 
+        { 
+            HUD.ins.GameEndedGO.SetActive(false); 
+            scoreboardOpened = false; 
         }
 
         if (!gameEnded)
@@ -228,10 +233,6 @@ public class MessagingSystem : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnLeftRoom()
-    {
-        print("Blaz je zanic");
-    }
     public void I_Died(int _id) {
         photonView.RPC("Death", RpcTarget.All, _id);
     }
