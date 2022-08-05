@@ -17,6 +17,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public Text roomName, numberOfPlayers;
     public TextMeshProUGUI aloneInRoomText;
     public Slider numberOfPlayersSlider;
+    public Dropdown regionDropdown;
 
     public RoomItem roomItemPrefab;
     List<RoomItem> roomItemsList = new List<RoomItem>();
@@ -25,6 +26,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     float nextUpdateTime;
     private string masterClientName;
     private bool thereIsConnection = true;
+    private string serverRegion = "eu";
 
     private void Start()
     {
@@ -205,18 +207,41 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     public void OnNumberOfPlayersSliderValue()
-
     {
-
         numberOfPlayers.text = numberOfPlayersSlider.value.ToString();
-
     }
 
     public void QuitButton()
-
     {
-
         Application.Quit();
+    }
 
+    public void RegionDropdownChanged()
+    {
+        switch (regionDropdown.value)
+        {
+            case 0:
+                serverRegion = "eu";
+                break;
+            case 1:
+                serverRegion = "asia";
+                break;
+            case 2:
+                serverRegion = "au";
+                break;
+        }
+
+        PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = serverRegion;
+        PhotonNetwork.PhotonServerSettings.AppSettings.UseNameServer = true;
+        PhotonNetwork.PhotonServerSettings.AppSettings.AppIdRealtime = "e85ffa5a-8e87-4cc4-959d-208466a03f8e"; // TODO: replace with your own AppId
+        PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = "1.1";
+        PhotonNetwork.Disconnect();
+
+        Invoke("Reconect", 1);
+    }
+
+    public void Reconect()
+    {
+        PhotonNetwork.ConnectToMaster(serverRegion, 1234, "e85ffa5a-8e87-4cc4-959d-208466a03f8e");
     }
 }

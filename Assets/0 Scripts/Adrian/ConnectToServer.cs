@@ -5,13 +5,16 @@ using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ConnectToServer : MonoBehaviourPunCallbacks
 {
     public GameObject networkPopup, chooseNamePanel;
     public GameObject enterAName;
     public InputField usernameInput;
+    public Dropdown regionDropdown;
     public Text buttonText;
+    private string serverRegion = "eu";
     bool thereIsConnection = false;
 
     private void Start()
